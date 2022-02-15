@@ -1,64 +1,89 @@
 <?php
 
-if (isset($_POST['SUBMIT'])) {
-    $units = $_POST['units'];
-    if (!empty($units)) {
-        $answer = bill_amount($units);
-        echo "$answer";
-        
-    }
-}
-function bill_amount($units)
-{
-    global $bill_price ;
 
-    if($units <= 50)
-    {
-        $bill_price = $units * 3.50;   
-    }
-    else if($units > 50 && $units <= 150)
-    {
-        $fifty_bill = 50 * 3.50;
-        $units = $units - 50;
-        $bill_price = $fifty_bill + $units * 4.00;
+global $number;
+global $answer;
+$number1 = (float)$_GET["number1"];
+$number2 = (float)$_GET["number2"];
 
-    }
-    else if($units > 150 && $units <= 250)
-    {
-        $fifty_bill = 50 * 3.50;
-        $hundred_bill = 100 * 4.00;
-        $units = $units - 150;
-        $bill_price = $fifty_bill + $hundred_bill + $units * 5.20;
-        
-    }
-    else
-    {
-        $fifty_bill = 50 * 3.50;
-        $hundred_bill = 100 * 4.00;
-        $two_hundred_bill= 100 * 5.20;
-        $units = $units - 250;
-        $bill_price = $fifty_bill + $hundred_bill +$two_hundred_bill +$units * 6.50;
-    }
-    return $bill_price;
+
+$n1 = $_GET ["number1"];  
+if (!preg_match ("/^[0-9]*$/", $n1) ){  
+    $ErrMsg = "Only numeric value is allowed.";  
+    echo $ErrMsg;  
+} else {  
+    echo $mobileno;  
+}  
+$n2 = $_GET ["number2"];  
+if (!preg_match ("/^[0-9]*$/", $n2) ){  
+    $ErrMsg = "Only numeric value is allowed.";  
+    echo $ErrMsg;  
+} else {  
+    echo $mobileno;  
+} 
+
+
+if(isset($_GET['addition'])) { 
+    $number = $_GET["addition"];
 }
+if(isset($_GET['subtract'])) { 
+    $number =$_GET["subtract"];
+}
+if(isset($_GET["multiply"])) { 
+    $number = $_GET["multiply"];
+}
+if(isset($_GET["divide"])) { 
+    $number = $_GET["divide"];
+}
+
+switch ($number) {
+    case "+":
+        $answer = $number1 + $number2;
+       
+        break;
+
+    case "-":
+        $answer = $number1 - $number2;
+        break;
+
+    case "*":
+        $answer = $number1 * $number2;
+        break;
+
+    case "/":
+        if($number2 == 0)
+        {
+            echo "division by zero not possible";
+        }
+        else{
+        $answer = $number1 / $number2;
+        }
+        break;
+     
+}
+
+
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<html>
+    <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+        
+    </head>
 <body>
-<form action="" method="post">
-Enter units to calculate bill: <input type="text" name="units"><br>
-<input type="submit" name = SUBMIT>
+
+<form action="" method="get">
+Number 1: <input type="text" name="number1"><br><br>
+Number 2: <input type="text" name="number2"><br><br>
+Result : <input type ="text" id = "id1" name= "" value = '<?php echo $answer ?>'><br><br>
+<input type = "submit" name = "addition" value="+">
+<input type = "submit" name = "subtract" value = "-">
+<input type = "submit" name = "multiply" value="*">
+<input type = "submit" name = "divide" value="/">
+
 </form>
-
-
 
 </body>
 </html>
+
