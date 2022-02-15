@@ -1,64 +1,76 @@
 <?php
 
-if (isset($_POST['SUBMIT'])) {
-    $units = $_POST['units'];
-    if (!empty($units)) {
-        $answer = bill_amount($units);
-        echo "$answer";
-        
-    }
-}
-function bill_amount($units)
+function conversion()
 {
-    global $bill_price ;
-
-    if($units <= 50)
-    {
-        $bill_price = $units * 3.50;   
-    }
-    else if($units > 50 && $units <= 150)
-    {
-        $fifty_bill = 50 * 3.50;
-        $units = $units - 50;
-        $bill_price = $fifty_bill + $units * 4.00;
-
-    }
-    else if($units > 150 && $units <= 250)
-    {
-        $fifty_bill = 50 * 3.50;
-        $hundred_bill = 100 * 4.00;
-        $units = $units - 150;
-        $bill_price = $fifty_bill + $hundred_bill + $units * 5.20;
-        
-    }
+    $n1 = $_GET ["input"];  
+    if (!preg_match ("/^[0-9]*$/", $n1) )
+    {  
+        $ErrMsg = "Only numeric value is allowed.";  
+        echo $ErrMsg;  
+    }  
     else
     {
-        $fifty_bill = 50 * 3.50;
-        $hundred_bill = 100 * 4.00;
-        $two_hundred_bill= 100 * 5.20;
-        $units = $units - 250;
-        $bill_price = $fifty_bill + $hundred_bill +$two_hundred_bill +$units * 6.50;
+        $num= "";
+        $num1 = (float)$_GET["input"];
+        $num2 = (float)$_GET["radiobtn"];
+
+        if ($num2 ==1) 
+        {
+            $num = $num1 * 60;
+        } 
+        else 
+        {
+            $num = $num1 * 60 * 60;
+        }
     }
-    return $bill_price;
+    return $num;
 }
+
+
+if(array_key_exists('SUBMIT', $_GET)) {
+    $n = conversion();
+}
+
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-<form action="" method="post">
-Enter units to calculate bill: <input type="text" name="units"><br>
-<input type="submit" name = SUBMIT>
+
+<div id = "id1">
+<form action="" method="get">
+<input type="text" name="input"><br>
+
+<input type = "radio" name = "radiobtn" value=1>hours to min
+<br>
+<input type = "radio" name = "radiobtn" value=0>hours to seconds
+<br>
+<p><?php 
+if(array_key_exists('input', $_GET))
+{
+    if($_GET["radiobtn"]==1 )
+    {
+        echo $_GET['input']." hours to $n min";
+    }
+    else
+    {
+        echo $_GET['input']." hours to $n seconds";
+    }
+}
+?></p>
+
+
+<input type = "submit" name = "SUBMIT" id = "id2" value = "Convert">
 </form>
-
-
+</div>
 
 </body>
 </html>
